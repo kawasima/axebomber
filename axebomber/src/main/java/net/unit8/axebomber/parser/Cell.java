@@ -18,6 +18,13 @@ package net.unit8.axebomber.parser;
 import java.awt.Color;
 import java.util.regex.Pattern;
 
+/**
+ * The model of a cell.
+ * 
+ * This is a wrapper of POI Cell object.
+ * 
+ * @author kawasima
+ */
 public abstract class Cell {
 	private int rowIndex;
 	private int columnIndex;
@@ -45,6 +52,11 @@ public abstract class Cell {
 		return Pattern.compile(patternStr);
 	}
 	
+	/**
+	 * get POI cell object
+	 * 
+	 * @return POI cell object
+	 */
 	public abstract org.apache.poi.ss.usermodel.Cell getSubstance();
 
 }

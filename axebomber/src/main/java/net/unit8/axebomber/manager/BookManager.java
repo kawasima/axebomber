@@ -13,8 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package net.unit8.axebomber.parser;
+package net.unit8.axebomber.manager;
 
-public abstract class BookService {
+import net.unit8.axebomber.parser.Book;
 
+public abstract class BookManager {
+	public abstract Book create(String path);
+	public abstract Book open(String path);
+	public Book openOrCreate(String path) {
+		try {
+			return open(path);
+		} catch(Exception e) {
+			return create(path);
+		}
+	}
+	
+	public abstract void save(Book book);
 }

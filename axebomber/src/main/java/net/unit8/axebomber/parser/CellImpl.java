@@ -139,6 +139,16 @@ public class CellImpl extends Cell {
 	public org.apache.poi.ss.usermodel.Cell getSubstance() {
 		return this.cell;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object instanceof String) {
+			return this.toString().equals((String)object);
+		} else if (object instanceof CellImpl) {
+			return this.cell.equals(((CellImpl)object).getSubstance());
+		}
+		return false;
+	}
 	/*
 
 	public void setBorder() {

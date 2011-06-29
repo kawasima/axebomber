@@ -20,11 +20,12 @@ import java.util.Map;
 
 public class Row {
 	org.apache.poi.ss.usermodel.Row row;
-	private final Map<String, Integer> labelColumns;
+	private Map<String, Integer> labelColumns = null;
 
 	public Row(org.apache.poi.ss.usermodel.Row row, TableHeader tableHeader) {
 		this.row = row;
-		this.labelColumns = tableHeader.getLabelColumns();
+		if(tableHeader != null)
+			this.labelColumns = tableHeader.getLabelColumns();
 	}
 
 	public Cell cell(Integer columnIndex) {
@@ -43,9 +44,12 @@ public class Row {
 		}
 	}
 	public Cell cell(String name) {
+		if(this.labelColumns == null) {
+			throw new RuntimeException("labelColumnsを設定しないとラベルは使えません");
+		}
 		Integer columnIndex = labelColumns.get(name);
 		if(columnIndex == null)
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("can't find label:"+name);
 		org.apache.poi.ss.usermodel.Cell cell = row.getCell(columnIndex);
 		if (cell != null) {
 			return new CellImpl(cell);
@@ -75,5 +79,12 @@ public class Row {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+
+	public Integer getIndex() {
+		return row.getRowNum();
+	}
+	public org.apache.poi.ss.usermodel.Row getSubstance() {
+		return row;
 	}
 }

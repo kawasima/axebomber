@@ -37,6 +37,15 @@ public class TableHeader {
 		Cell beginCell = getCell(labelCell.getColumnIndex(), labelRowIndex);
 		labelColumns = scanColumnLabel(beginCell);
 	}
+	
+	public TableHeader(Row labelRow) {
+		this.labelRowIndex = labelRow.getIndex();
+		this.labelColumnIndex = 0;
+		this.sheet = labelRow.getSubstance().getSheet();
+		Cell beginCell = getCell(labelColumnIndex, labelRowIndex);
+		labelColumns = scanColumnLabel(beginCell);
+				
+	}
 
 	private Map<String, Integer> scanColumnLabel(Cell beginCell) {
 		int rowIndex = beginCell.getRowIndex();

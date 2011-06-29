@@ -40,6 +40,9 @@ public class Sheet {
 		this.sheet = sheet;
 	}
 
+	public void setTitleRowIndex(int rowIndex) {
+		tableHeader = new TableHeader(getRow(rowIndex));
+	}
 	public void setTableLabel(String label) {
 		Cell labelCell = findCell(label);
 		tableHeader = new TableHeader(labelCell, label);

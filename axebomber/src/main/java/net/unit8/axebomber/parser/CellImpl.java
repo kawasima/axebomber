@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 kawasima
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,17 +16,21 @@
 package net.unit8.axebomber.parser;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
 public class CellImpl extends Cell {
 	private final org.apache.poi.ss.usermodel.Cell cell;
 	private Pattern rgbExp = Pattern.compile("#([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})");
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
 	public CellImpl(org.apache.poi.ss.usermodel.Cell cell) {
 		this.cell = cell;
@@ -43,8 +47,13 @@ public class CellImpl extends Cell {
 		case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING:
 			return cell.getStringCellValue();
 		case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
-			BigDecimal d = new BigDecimal(cell.getNumericCellValue());
-			return d.toString();
+			if (DateUtil.isCellInternalDateFormatted(cell)) {
+				Date d = DateUtil.getJavaDate(cell.getNumericCellValue());
+				return dateFormat.format(d);
+			} else {
+				BigDecimal d = new BigDecimal(cell.getNumericCellValue());
+				return d.toString();
+			}
 		case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN:
 			return String.valueOf(cell.getBooleanCellValue());
 		}
@@ -134,12 +143,12 @@ public class CellImpl extends Cell {
 
 		}
 	}
-	
+
 	@Override
 	public org.apache.poi.ss.usermodel.Cell getSubstance() {
 		return this.cell;
 	}
-	
+
 	@Override
 	public boolean equals(Object object) {
 		if(object instanceof String) {

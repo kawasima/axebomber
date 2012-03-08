@@ -22,12 +22,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Sheet {
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(Sheet.class);
 	private org.apache.poi.ss.usermodel.Sheet sheet;
 	private Integer rowIndex;
 	private TableHeader tableHeader;
@@ -124,7 +119,6 @@ public class Sheet {
 				if (cell == null)
 					continue;
 				Matcher m = p.matcher(cell.getStringCellValue());
-				//logger.debug(cell.getStringCellValue());
 				if (m.find()) {
 					return new CellImpl(cell);
 				}

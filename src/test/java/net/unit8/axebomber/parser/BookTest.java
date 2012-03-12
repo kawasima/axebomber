@@ -18,15 +18,15 @@ public class BookTest {
 		BookManager bookManager = new ReadOnlyFileSystemBookManager();
 		book = bookManager.open(new File(getClass().getClassLoader().getResource("sample1.xls").toURI()).getAbsolutePath());
 	}
-	
+
 	@Test
 	public void findCell_can_search_by_a_cell_value() {
-		Sheet sheet = book.sheet("画面仕様書");
+		Sheet sheet = book.getSheet("画面仕様書");
 		assertNotNull(sheet);
-		
+
 		Cell cell1 = sheet.findCell("画面仕様書");
 		assertNotNull(cell1);
-		
+
 		assertEquals(0, cell1.getColumnIndex());
 		assertEquals(0, cell1.getRowIndex());
 

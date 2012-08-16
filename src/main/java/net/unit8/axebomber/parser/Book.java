@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class Book {
 	private Workbook workbook;
 	private String path;
+	private boolean editable = false;
 
 	public Book(Workbook workbook) {
 		this.workbook = workbook;
@@ -44,9 +45,13 @@ public class Book {
 	public Sheet getSheet(String name) {
 		org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheet(name);
 		if(sheet == null) {
-			sheet = workbook.createSheet(name);
+			if (editable) {
+				sheet = workbook.createSheet(name);
+			} else {
+				throw new SheetNotFoundException(name);
+			}
 		}
-		return new Sheet(sheet);
+		return new Sheet(sheet, editable);
 	}
 
 	/**
@@ -88,5 +93,13 @@ public class Book {
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

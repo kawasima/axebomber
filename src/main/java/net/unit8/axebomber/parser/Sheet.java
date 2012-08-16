@@ -26,13 +26,18 @@ public class Sheet {
 	private org.apache.poi.ss.usermodel.Sheet sheet;
 	private Integer rowIndex;
 	private TableHeader tableHeader;
-	private boolean isReadOnly = false;
+	private boolean editable = false;
 
 	public Sheet(org.apache.poi.ss.usermodel.Sheet sheet) {
+		this(sheet, false);
+	}
+
+	public Sheet(org.apache.poi.ss.usermodel.Sheet sheet, boolean editable) {
 		rowIndex = 0;
 		if(sheet == null)
 			throw new RuntimeException("sheet not found");
 		this.sheet = sheet;
+		this.editable = editable;
 	}
 
 	public String getName() {
@@ -103,10 +108,18 @@ public class Sheet {
 	}
 
 	public Row getRow(int rowIndex) {
-		org.apache.poi.ss.usermodel.Row row = sheet.getRow(rowIndex);
-		if(row == null)
-			row = this.sheet.createRow(rowIndex);
-		return new Row(row, tableHeader);
+		org.apache.poi.ss.usermodel.Row nativeRow = sheet.getRow(rowIndex);
+		if(nativeRow == null) {
+			if (editable) {
+				nativeRow = this.sheet.createRow(rowIndex);
+			} else {
+				throw new RowNotFoundException("index " + rowIndex);
+			}
+		}
+		Row row = new Row(nativeRow, tableHeader);
+		if (editable)
+			row.setEditable(editable);
+		return row;
 	}
 
 	public Cell findCell(Pattern p) {
@@ -175,17 +188,24 @@ public class Sheet {
 
 	public void nextRow() {
 		rowIndex++;
-		if(!isReadOnly) {
+		if(editable) {
 			if(sheet.getRow(rowIndex) == null) {
 				sheet.createRow(rowIndex);
 			}
 		}
 	}
 
-	/**
-	 *
-	 */
-	public void autoStyling() {
+	public Range createRange(String rangeStr) {
+		Range range = Range.parse(rangeStr);
+		range.setSheet(sheet);
+		return range;
+	}
 
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

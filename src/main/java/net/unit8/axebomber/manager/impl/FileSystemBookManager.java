@@ -34,6 +34,7 @@ public class FileSystemBookManager extends BookManager {
 			newbook = new Book(new HSSFWorkbook());
 			newbook.setPath(path + ".xls");
 		}
+		newbook.setEditable(true);
 		return newbook;
 	}
 
@@ -45,6 +46,7 @@ public class FileSystemBookManager extends BookManager {
 			Workbook workbook = WorkbookFactory.create(fis);
 			Book book = new Book(workbook);
 			book.setPath(path);
+			book.setEditable(true);
 			return book;
 		} catch(IOException e) {
 			throw new BookIOException("", e);

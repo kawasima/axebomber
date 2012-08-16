@@ -81,12 +81,12 @@ public class Range {
 				int borderBits = 0;
 				if (i == top)
 					borderBits |= StyleManager.BORDER_TOP;
-				else if (i == bottom)
+				if (i == bottom)
 					borderBits |= StyleManager.BORDER_BOTTOM;
 
 				if (j == left)
 					borderBits |= StyleManager.BORDER_LEFT;
-				else if (j == right)
+				if (j == right)
 					borderBits |= StyleManager.BORDER_RIGHT;
 
 				org.apache.poi.ss.usermodel.Cell cell = row.getCell(j, Row.CREATE_NULL_AS_BLANK);

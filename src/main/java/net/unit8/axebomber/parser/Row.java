@@ -18,6 +18,8 @@ package net.unit8.axebomber.parser;
 import java.awt.Color;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
+
 public class Row {
 	org.apache.poi.ss.usermodel.Row row;
 	private Map<String, Integer> labelColumns = null;
@@ -51,7 +53,8 @@ public class Row {
 		Integer columnIndex = labelColumns.get(name);
 		if(columnIndex == null)
 			throw new IllegalArgumentException("can't find label:"+name);
-		org.apache.poi.ss.usermodel.Cell cell = row.getCell(columnIndex);
+		org.apache.poi.ss.usermodel.Cell cell = row.getCell(columnIndex, 
+				editable ? org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK : org.apache.poi.ss.usermodel.Row.RETURN_NULL_AND_BLANK);
 		if (cell != null) {
 			return new CellImpl(cell);
 		} else {

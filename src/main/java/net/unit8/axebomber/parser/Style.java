@@ -8,6 +8,7 @@ public class Style {
 	private IndexedColors backgroundColor;
 	private short borderStyle;
 	private IndexedColors borderColor;
+	private short innerBorderStyle;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -17,7 +18,8 @@ public class Style {
 		return style.getColor() == this.color
 				&& style.getBackgroundColor() == this.backgroundColor
 				&& style.getBorderStyle() == this.borderStyle
-				&& style.getBorderColor() == this.borderColor;
+				&& style.getBorderColor() == this.borderColor
+				&& style.getInnerBorderStyle() == this.innerBorderStyle;
 	}
 
 	public IndexedColors getColor() {
@@ -58,5 +60,18 @@ public class Style {
 
 	public void setBorderColor(IndexedColors borderColor) {
 		this.borderColor = borderColor;
+	}
+
+	public short getInnerBorderStyle() {
+		return innerBorderStyle;
+	}
+
+	public void setInnerBorderStyle(short innerBorderStyle) {
+		this.innerBorderStyle = innerBorderStyle;
+	}
+
+	public void setInnerBorderStyle(String name) {
+		BorderStyle borderStyle = BorderStyle.valueOf(name);
+		this.innerBorderStyle = (short) borderStyle.ordinal();
 	}
 }

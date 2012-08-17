@@ -10,9 +10,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class StyleManager {
 	public static final int BORDER_TOP    = 1;
-	public static final int BORDER_BOTTOM = 2;
-	public static final int BORDER_LEFT   = 4;
-	public static final int BORDER_RIGHT  = 8;
+	public static final int BORDER_BOTTOM = 3;
+	public static final int BORDER_LEFT   = 9;
+	public static final int BORDER_RIGHT  = 27;
 
 	private static volatile Map<Workbook, StyleManager> cache = new HashMap<Workbook, StyleManager>();
 	private Workbook workbook;
@@ -37,21 +37,21 @@ public class StyleManager {
 	public CellStyle getStyle(Style style, int borderBits) {
 		if (!styles.containsKey(style)) {
 			List<CellStyle> cellStyles = new ArrayList<CellStyle>();
-			for (int i=0; i <= (BORDER_TOP|BORDER_BOTTOM|BORDER_LEFT|BORDER_RIGHT); i++) {
+			for (int i=0; i <  3*3*3*3; i++) {
 				CellStyle cellStyle = workbook.createCellStyle();
 				cellStyle.setFillForegroundColor(style.getBackgroundColor().getIndex());
 				cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-				if ((i & BORDER_TOP) != 0) {
-					cellStyle.setBorderTop(style.getBorderStyle());
+				if ((i % 3) != 0) {
+					cellStyle.setBorderTop(i % 3==1 ? style.getBorderStyle() : style.getInnerBorderStyle());
 				}
-				if ((i & BORDER_BOTTOM) != 0) {
-					cellStyle.setBorderBottom(style.getBorderStyle());
+				if ((i / 3) % 3 != 0) {
+					cellStyle.setBorderBottom((i / 3) % 3 ==1 ? style.getBorderStyle() : style.getInnerBorderStyle());
 				}
-				if ((i & BORDER_LEFT) != 0) {
-					cellStyle.setBorderLeft(style.getBorderStyle());
+				if ((i / 9) % 3 != 0) {
+					cellStyle.setBorderLeft((i / 9) % 3 ==1 ? style.getBorderStyle() : style.getInnerBorderStyle());
 				}
-				if ((i & BORDER_RIGHT) != 0) {
-					cellStyle.setBorderRight(style.getBorderStyle());
+				if ((i / 27) % 3 != 0) {
+					cellStyle.setBorderRight((i / 27) % 3 ==1 ? style.getBorderStyle() : style.getInnerBorderStyle());
 				}
 				cellStyles.add(cellStyle);
 			}

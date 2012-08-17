@@ -15,6 +15,7 @@ range = sheet.createRange("R0")
 style = Style.new
 style.backgroundColor = "GOLD"
 style.borderStyle = "MEDIUM"
+style.innerBorderStyle = "DASHED"
 range.style = style
 
 (1..3).each {|i|

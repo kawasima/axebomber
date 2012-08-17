@@ -13,4 +13,8 @@ manager = ReadOnlyFileSystemBookManager.new
 book = manager.open("src/test/resources/sample1.xls");
 book.sheets('name' => NameFilter.new).each {|sheet|
 	puts sheet.name
+	sheet.tableLabel = "画面遷移"
+	puts sheet.cell("遷移元")
+	sheet.nextRow
+  puts sheet.cell("遷移元")
 }

@@ -80,14 +80,24 @@ public class Range {
 			for(int j = left; j <= right; j++) {
 				int borderBits = 0;
 				if (i == top)
-					borderBits |= StyleManager.BORDER_TOP;
+					borderBits += StyleManager.BORDER_TOP;
+				else
+					borderBits += (StyleManager.BORDER_TOP * 2);
+
 				if (i == bottom)
-					borderBits |= StyleManager.BORDER_BOTTOM;
+					borderBits += StyleManager.BORDER_BOTTOM;
+				else
+					borderBits += (StyleManager.BORDER_BOTTOM * 2);
 
 				if (j == left)
-					borderBits |= StyleManager.BORDER_LEFT;
+					borderBits += StyleManager.BORDER_LEFT;
+				else
+					borderBits += (StyleManager.BORDER_LEFT * 2);
+
 				if (j == right)
-					borderBits |= StyleManager.BORDER_RIGHT;
+					borderBits += StyleManager.BORDER_RIGHT;
+				else
+					borderBits += (StyleManager.BORDER_RIGHT * 2);
 
 				org.apache.poi.ss.usermodel.Cell cell = row.getCell(j, Row.CREATE_NULL_AS_BLANK);
 				CellStyle cellStyle = StyleManager.getInstance(sheet.getWorkbook()).getStyle(style, borderBits);

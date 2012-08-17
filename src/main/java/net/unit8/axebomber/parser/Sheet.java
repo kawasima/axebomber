@@ -46,15 +46,21 @@ public class Sheet {
 
 	public void setTitleRowIndex(int rowIndex) {
 		tableHeader = new TableHeader(getRow(rowIndex));
+		if (tableHeader != null)
+			rowIndex = tableHeader.getBodyRowIndex();
 	}
 	public void setTableLabel(String label) {
 		Cell labelCell = findCell(label);
 		tableHeader = new TableHeader(labelCell, label);
+		if (tableHeader != null)
+			rowIndex = tableHeader.getBodyRowIndex();
 	}
 
 	public void setTableLabel(Pattern p){
 		Cell labelCell = findCell(p);
 		tableHeader = new TableHeader(labelCell, p);
+		if (tableHeader != null)
+			rowIndex = tableHeader.getBodyRowIndex();
 	}
 
 	public TableHeader getTableHeader() {
@@ -184,6 +190,19 @@ public class Sheet {
 	 */
 	public Cell cell(int columnIndex) {
 		return cell(columnIndex, this.rowIndex);
+	}
+
+	public Cell cell(String name) {
+		if (tableHeader == null)
+			throw new IllegalArgumentException("Sheet#cell(String) must be set title row.");
+		Integer index = tableHeader.getLabelColumns().get(name);
+		if (index == null)
+			throw new CellNotFoundException(name);
+		return cell(index);
+	}
+
+	public void setRowIndex(int rowIndex) {
+		this.rowIndex = rowIndex;
 	}
 
 	public void nextRow() {

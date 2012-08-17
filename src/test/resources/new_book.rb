@@ -19,8 +19,8 @@ style.innerBorderStyle = "DASHED"
 range.style = style
 
 (1..3).each {|i|
-	row = sheet.getRow(i)
-	row.cell(0).value = i
-	row.cell("title").value = "#{i}のテスト"
+	sheet.cell(0).value = i
+	sheet.cell("title").value = "#{i}のテスト"
+	sheet.nextRow
 }
 manager.save(book)

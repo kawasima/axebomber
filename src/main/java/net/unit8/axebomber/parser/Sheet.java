@@ -47,7 +47,7 @@ public class Sheet {
 	public void setTitleRowIndex(int rowIndex) {
 		tableHeader = new TableHeader(getRow(rowIndex));
 		if (tableHeader != null)
-			rowIndex = tableHeader.getBodyRowIndex();
+			this.rowIndex = tableHeader.getBodyRowIndex();
 	}
 	public void setTableLabel(String label) {
 		Cell labelCell = findCell(label);

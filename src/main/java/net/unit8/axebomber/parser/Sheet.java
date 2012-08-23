@@ -215,8 +215,9 @@ public class Sheet {
 	}
 
 	public Range createRange(String rangeStr) {
-		Range range = Range.parse(rangeStr);
-		range.setSheet(sheet);
+		Range range = Range.parse(rangeStr, this);
+		if (tableHeader != null)
+			range.setLabelColumns(tableHeader.getLabelColumns());
 		return range;
 	}
 
@@ -226,5 +227,9 @@ public class Sheet {
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	public org.apache.poi.ss.usermodel.Sheet getSubstance() {
+		return sheet;
 	}
 }

@@ -4,8 +4,8 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 public class Style {
-	private IndexedColors color;
-	private IndexedColors backgroundColor;
+	private IndexedColors color = IndexedColors.AUTOMATIC;
+	private IndexedColors backgroundColor = IndexedColors.WHITE;
 	private short borderStyle;
 	private IndexedColors borderColor;
 	private short innerBorderStyle;

@@ -158,11 +158,4 @@ public class CellImpl extends Cell {
 		}
 		return false;
 	}
-	/*
-
-	public void setBorder() {
-		HSSFCellStyle.
-		cell.setCellStyle(CellStyle.BORDER_THICK);
-	}
-	*/
 }

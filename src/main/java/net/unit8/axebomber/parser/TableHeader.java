@@ -43,6 +43,9 @@ public class TableHeader {
 		this.labelColumnIndex = 0;
 		this.sheet = labelRow.getSubstance().getSheet();
 		Cell beginCell = getCell(labelColumnIndex, labelRowIndex);
+		for (labelColumnIndex++; beginCell == null && labelColumnIndex <= labelRow.getSubstance().getLastCellNum(); labelColumnIndex++)
+			beginCell = getCell(labelColumnIndex, labelRowIndex);
+
 		labelColumns = scanColumnLabel(beginCell);
 
 	}
@@ -56,7 +59,8 @@ public class TableHeader {
 			if (cell == null)
 				continue;
 			if (!cell.toString().equals("")) {
-				labelColumns.put(cell.toString(), i);
+				String label = StringUtils.remove(StringUtils.trim(cell.toString()), "\n");
+				labelColumns.put(label, i);
 			}
 		}
 		return labelColumns;

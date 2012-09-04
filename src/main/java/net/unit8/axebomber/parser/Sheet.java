@@ -97,7 +97,12 @@ public class Sheet {
 		}
 		List<Row> rows = new ArrayList<Row>();
 		for(int i=tableHeader.getBodyRowIndex(); i<=sheet.getLastRowNum(); i++) {
-			Row row = this.getRow(i);
+			Row row = null;
+			try {
+				row = this.getRow(i);
+			} catch(RowNotFoundException e) {
+				continue;
+			}
 
 			if(exceptGrayout && row.isGrayout()) {
 				continue;

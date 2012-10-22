@@ -16,6 +16,8 @@
 package net.unit8.axebomber.parser;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Row {
@@ -58,6 +60,14 @@ public class Row {
 		} else {
 			return new BlankCell(columnIndex, row.getRowNum());
 		}
+	}
+
+	public List<Cell> cells() {
+		List<Cell> cells = new ArrayList<Cell>();
+		for (String label : this.labelColumns.keySet()) {
+			cells.add(cell(label));
+		}
+		return cells;
 	}
 
 	public boolean isGrayout() {

@@ -73,8 +73,22 @@ public class Range {
 			return StringUtils.isEmpty(m.group(i+1)) ? 0 : Integer.parseInt(m.group(i+1));
 		}
 	}
+	public int getFirstRowNum() {
+		return y1;
+	}
+	public int getLastRowNum() {
+		return y2;
+	}
+	public int getFirstColumnNum() {
+		return x1;
+	}
+	public int getLastColumnNum() {
+		return x2;
+	}
 
-
+	public Sheet getSheet() {
+		return sheet;
+	}
 	public void setStyle(Style style) {
 		int top = Math.max(y1, sheet.getSubstance().getFirstRowNum());
 		int bottom = Math.min(y2, sheet.getSubstance().getLastRowNum());

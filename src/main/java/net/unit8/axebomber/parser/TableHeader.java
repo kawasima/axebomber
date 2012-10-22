@@ -15,7 +15,9 @@
  ******************************************************************************/
 package net.unit8.axebomber.parser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -25,7 +27,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 public class TableHeader {
 	private int labelRowIndex;
 	private int labelColumnIndex;
-	private Map<String, Integer> labelColumns;
+	private Map<String, Integer> labelColumns  = new HashMap<String, Integer>();
+	private Map<Integer, String> columnLabels  = new HashMap<Integer, String>();
+	private Map<String, List<String>> labelRelations = new HashMap<String, List<String>>();
 	private Sheet sheet;
 	private Object labelPattern;
 
@@ -35,7 +39,7 @@ public class TableHeader {
 		this.labelColumnIndex = labelCell.getColumnIndex();
 		this.sheet = labelCell.getSubstance().getSheet();
 		Cell beginCell = getCell(labelCell.getColumnIndex(), labelRowIndex);
-		labelColumns = scanColumnLabel(beginCell);
+		scanColumnLabel(beginCell);
 	}
 
 	public TableHeader(Row labelRow) {
@@ -46,24 +50,59 @@ public class TableHeader {
 		for (labelColumnIndex++; beginCell == null && labelColumnIndex <= labelRow.getSubstance().getLastCellNum(); labelColumnIndex++)
 			beginCell = getCell(labelColumnIndex, labelRowIndex);
 
-		labelColumns = scanColumnLabel(beginCell);
+		scanColumnLabel(beginCell);
 
 	}
 
-	private Map<String, Integer> scanColumnLabel(Cell beginCell) {
+	public TableHeader(Range range) {
+		this.sheet = range.getSheet().getSubstance();
+		for (int rowIndex = range.getFirstRowNum(); rowIndex <= range.getLastRowNum(); rowIndex++) {
+			String currentLabel = null;
+			int colLastIndex = Math.min(this.sheet.getRow(rowIndex).getLastCellNum(), range.getLastColumnNum());
+			int colFirstIndex = Math.max(this.sheet.getRow(rowIndex).getFirstCellNum(), range.getFirstColumnNum());
+			for (int colIndex = colFirstIndex; colIndex <= colLastIndex; colIndex++) {
+				Cell cell = range.getSheet().cell(colIndex, rowIndex);
+				String value = StringUtils.remove(StringUtils.trim(cell.toString()), "\n");
+				if (StringUtils.isNotBlank(value)) {
+					currentLabel = value;
+					labelColumns.put(currentLabel, colIndex);
+				}
+				if (StringUtils.isNotBlank(currentLabel)) {
+					String parentLabel = columnLabels.get(colIndex);
+					if (parentLabel != null) {
+						List<String> children = labelRelations.get(parentLabel);
+						if (children == null) {
+							children = new ArrayList<String>();
+							labelRelations.put(parentLabel, children);
+						}
+						if (!children.contains(currentLabel))
+							children.add(currentLabel);
+					}
+					columnLabels.put(colIndex, currentLabel);
+				}
+			}
+		}
+	}
+
+	public List<String> childLabels(String parent) {
+		return labelRelations.get(parent);
+	}
+	private void scanColumnLabel(Cell beginCell) {
 		int rowIndex = beginCell.getRowIndex();
-		Map<String, Integer> labelColumns = new HashMap<String, Integer>();
 		org.apache.poi.ss.usermodel.Row row = sheet.getRow(rowIndex);
+		String currentValue = null;
 		for (int i=row.getFirstCellNum(); i<row.getLastCellNum(); i++) {
 			Cell cell = getCell(i, rowIndex);
 			if (cell == null)
 				continue;
+			String label = StringUtils.remove(StringUtils.trim(cell.toString()), "\n");
 			if (!cell.toString().equals("")) {
-				String label = StringUtils.remove(StringUtils.trim(cell.toString()), "\n");
 				labelColumns.put(label, i);
+				currentValue = label;
 			}
+			if (currentValue != null)
+				columnLabels.put(i, currentValue);
 		}
-		return labelColumns;
 	}
 
 	private Cell getCell(int columnIndex, int rowIndex) {
@@ -95,6 +134,10 @@ public class TableHeader {
 
 	public String getLabel() {
 		return this.toString();
+	}
+
+	public String find(int columnIndex) {
+		return columnLabels.get(columnIndex);
 	}
 	@Override
 	public String toString() {

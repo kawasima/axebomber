@@ -44,11 +44,18 @@ public class Sheet {
 		return sheet.getSheetName();
 	}
 
+	public void setTitleRow(String rangeStr) {
+		Range range = Range.parse(rangeStr, this);
+		tableHeader = new TableHeader(range);
+		if (tableHeader != null)
+			this.rowIndex = tableHeader.getBodyRowIndex();
+	}
 	public void setTitleRowIndex(int rowIndex) {
 		tableHeader = new TableHeader(getRow(rowIndex));
 		if (tableHeader != null)
 			this.rowIndex = tableHeader.getBodyRowIndex();
 	}
+
 	public void setTableLabel(String label) {
 		Cell labelCell = findCell(label);
 		tableHeader = new TableHeader(labelCell, label);

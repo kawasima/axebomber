@@ -2,9 +2,9 @@
 
 Gem::Specification.new do |s|
   s.name = %{axebomber}
-  s.version  = "0.1.0"
+  s.version  = "0.1.1"
   s.platform = Gem::Platform.new([nil, "java", nil])
-  
+
   s.authors = ["kawasima"]
   s.description = %q{Excel parser for Hogan-style}
   s.email = ["kawasima1016@gmail.com"]

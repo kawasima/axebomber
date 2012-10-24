@@ -10,6 +10,6 @@ elsif $VERBOSE
 end
 
 module Axebomber
-  VERSION = "0.1.0-SNAPSHOT"
+  VERSION = "0.1.1"
   java_import "net.unit8.axebomber.manager.impl.ReadOnlyFileSystemBookManager"
 end

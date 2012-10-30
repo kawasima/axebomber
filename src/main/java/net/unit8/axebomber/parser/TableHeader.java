@@ -82,6 +82,7 @@ public class TableHeader {
 				}
 			}
 		}
+		this.labelRowIndex = range.getLastRowNum();
 	}
 
 	public List<String> childLabels(String parent) {

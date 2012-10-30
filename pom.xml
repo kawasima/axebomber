@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	<groupId>net.unit8.axebomber</groupId>
 	<artifactId>axebomber</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

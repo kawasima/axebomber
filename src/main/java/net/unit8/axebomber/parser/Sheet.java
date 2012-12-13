@@ -175,8 +175,9 @@ public class Sheet {
 				org.apache.poi.ss.usermodel.Cell cell = row.getCell(j);
 				if (cell == null)
 					continue;
-				if (value.equals(cell.getStringCellValue())) {
-					return new CellImpl(cell);
+				Cell cellImpl = new CellImpl(cell);
+				if (value.equals(cellImpl.toString())) {
+					return cellImpl;
 				}
 			}
 		}

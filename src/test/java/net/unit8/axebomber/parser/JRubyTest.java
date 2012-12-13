@@ -15,7 +15,7 @@ public class JRubyTest {
 	@Test
 	public void test() throws IOException, ScriptException {
 		ScriptEngine jruby = new ScriptEngineManager().getEngineByName("jruby");
-		FileReader reader = new FileReader("src/test/resources/sample1.rb");
+		FileReader reader = new FileReader("src/test/resources/kadai.rb");
 		try {
 			jruby.eval(reader);
 		} finally {

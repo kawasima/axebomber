@@ -25,13 +25,13 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
 public class CellImpl extends Cell {
 	private final org.apache.poi.ss.usermodel.Cell cell;
 	private Pattern rgbExp = Pattern.compile("#([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})");
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-
 	public CellImpl(org.apache.poi.ss.usermodel.Cell cell) {
 		this.cell = cell;
 		setColumnIndex(cell.getColumnIndex());
@@ -124,12 +124,16 @@ public class CellImpl extends Cell {
 	public java.awt.Color getColor() {
 		java.awt.Color awtColor = null;
 		CellStyle style = cell.getCellStyle();
-		Color color = style.getFillBackgroundColorColor();
+		Color color = style.getFillForegroundColorColor();
 		if (color instanceof HSSFColor) {
 			short[] rgb = ((HSSFColor) color).getTriplet();
+			if (((HSSFColor) color).getIndex() == IndexedColors.AUTOMATIC.getIndex())
+				rgb[0] = rgb[1] = rgb[2] = 255;
 			awtColor = new java.awt.Color(rgb[0], rgb[1], rgb[2]);
 		} else if (color instanceof XSSFColor) {
 			byte[] rgb = ((XSSFColor) color).getRgb();
+			if (((XSSFColor) color).isAuto())
+				rgb[0] = rgb[1] = rgb[2] = (byte)0xFF;
 			awtColor = new java.awt.Color(rgb[0], rgb[1], rgb[2], rgb[3]);
 		}
 		return awtColor;
